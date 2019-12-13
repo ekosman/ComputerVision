@@ -25,7 +25,11 @@ mean_y = np.mean(yi)
 A_tls = hstack([xi.reshape(-1, 1) - mean_x, yi.reshape(-1, 1) - mean_y])
 _, _, vt = svd(A_tls)
 v = vt.T
-slope_tls, intercept_tls = tuple(v[:, -1])
+a, b = tuple(v[:, -1])
+slope_tls = - a / b
+c = - (a * mean_x + b * mean_y)
+intercept_tls = - c / b
+
 
 
 
@@ -34,4 +38,4 @@ plt.scatter(xi, yi, label='original dots')
 plt.plot(xi, [ls_func(slope_ls, intercept_ls, x) for x in xi], label='Least Squares')
 plt.plot(xi, [ls_func(slope_tls, intercept_tls, x) for x in xi], label='Total Least Squares')
 plt.legend()
-plt.show()
+plt.savefig('q1plot.png')
