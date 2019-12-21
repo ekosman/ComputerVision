@@ -1,21 +1,22 @@
 f = imread('building.jpg');
 
-[BW, t] = edge(f,'Canny', [0.02 0.04]);
+[BW, t] = edge(f,'Canny', [0.01 0.02]);
 imshow(BW, [])
 [H,T,R] = hough(BW);
 imshow(H,[]);
 hold on;
-P  = houghpeaks(H,100);
+P  = houghpeaks(H,200);
 x = P(:,2); 
 y = P(:,1);
 plot(x,y,'s','color','white', 'MarkerFaceColor', 'b');
 
 lines = houghlines(BW,T,R,P,'FillGap',5,'MinLength',7);
-figure, imshow(f), hold on
+bl = zeros(size(f))
+figure, imshow(bl), hold on
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','white');
 
    % Plot beginnings and ends of lines
    %plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');

@@ -18,6 +18,7 @@ A = hstack([xi.reshape(-1, 1), ones(xi.size).reshape(-1, 1)])
 pseudo_A = pinv(A)
 
 slope_ls, intercept_ls = tuple(pseudo_A @ y)
+print(f"LS : intercept = {intercept_ls}     slope = {slope_ls}")
 
 mean_x = np.mean(xi)
 mean_y = np.mean(yi)
@@ -29,7 +30,7 @@ a, b = tuple(v[:, -1])
 slope_tls = - a / b
 c = - (a * mean_x + b * mean_y)
 intercept_tls = - c / b
-
+print(f"TLS : intercept = {intercept_tls}     slope = {slope_tls}")
 
 
 
