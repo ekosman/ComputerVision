@@ -1,31 +1,22 @@
-f = imread('building.jpg');
+f = double(imread('building.jpg'));
 
-[BW, t] = edge(f,'Canny', [0.01 0.02]);
+[BW, t] = edge(f,'Canny', [0.01 0.12]);
+figure(1)
 imshow(BW, [])
 [H,T,R] = hough(BW);
-imshow(H,[]);
+%imshow(H,[]);
 hold on;
-P  = houghpeaks(H,200);
+P  = houghpeaks(H,200, 'Threshold', 0.05*max(H(:)));
 x = P(:,2); 
 y = P(:,1);
-plot(x,y,'s','color','white', 'MarkerFaceColor', 'b');
+%plot(x,y,'s','color','white', 'MarkerFaceColor', 'b');
 
-lines = houghlines(BW,T,R,P,'FillGap',5,'MinLength',7);
-bl = zeros(size(f))
-figure, imshow(bl), hold on
-max_len = 0;
+lines = houghlines(BW,T,R,P,'FillGap',4.5,'MinLength',1);
+bl = zeros(size(f));
+figure(2)
+imshow(bl), hold on
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','white');
+   plot(xy(:,1),xy(:,2),'LineWidth',1,'Color','white'); hold on;
 
-   % Plot beginnings and ends of lines
-   %plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-   %plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-
-   % Determine the endpoints of the longest line segment
-   len = norm(lines(k).point1 - lines(k).point2);
-   if ( len > max_len)
-      max_len = len;
-      xy_long = xy;
-   end
 end
