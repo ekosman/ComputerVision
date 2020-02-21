@@ -18,7 +18,7 @@ for iteration = 1:iterations
     H = getProjectiveTransform(p1, p2);
     % map points from first image to second using the projective transformation  
     P2CurlH = H*[matchP1;ones(1,length(matchP1))];
-    P2Curl = P2CurlH(1:2,:);
+    P2Curl = P2CurlH(1:2,:) ./ P2CurlH(3,:);
     % calculate fitting error - L2 norm
     err = sqrt(sum((matchP2-P2Curl).^2,1)); 
     % give score to current fitting
@@ -35,6 +35,6 @@ if maxInliers == matchPointsNum
 end
 % matching inlier key-points after ransac
 P2CurlH = bestH*[matchP1;ones(1,length(matchP1))];
-P2Curl = P2CurlH(1:2,:);
+P2Curl = P2CurlH(1:2,:) ./ P2CurlH(3,:);
 err = sqrt(sum((matchP2-P2Curl).^2,1));
 ransacMatch = match(:,err<5);
